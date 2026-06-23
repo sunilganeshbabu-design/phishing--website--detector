@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CyberShield Phishing Detector</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+    font-family:Arial,sans-serif;
+    padding:20px;
+}
+
+h1{
+    text-align:center;
+    color:#00ffff;
+    margin-bottom:20px;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+}
+
+.search-box{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+input{
+    width:70%;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+}
+
+button{
+    padding:14px 25px;
+    border:none;
+    border-radius:8px;
+    margin-left:10px;
+    cursor:pointer;
+    font-size:16px;
+    background:#00ffff;
+    color:black;
+    font-weight:bold;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+/* =======================
+   DASHBOARD CARDS
+======================= */
+
+.dashboard{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:#111827;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+
+    box-shadow:
+    0 0 15px rgba(0,255,255,0.25);
+}
+
+.card h2{
+    color:#00ffff;
+    margin-bottom:10px;
+}
+
+.card-value{
+    font-size:34px;
+    font-weight:bold;
+}
+
+/* =======================
+   THREAT BADGE
+======================= */
+
+.badge{
+    display:inline-block;
+    padding:10px 25px;
+    border-radius:25px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.low{
+    background:green;
+}
+
+.medium{
+    background:orange;
+}
+
+.high{
+    background:red;
+}
+
+.critical{
+    background:darkred;
+}
+
+/* =======================
+   PROGRESS BAR
+======================= */
+
+.progress-container{
+    background:#1f2937;
+    height:30px;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:25px;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(
+        90deg,
+        #00ff99,
+        #00ffff
+    );
+
+    transition:1s;
+}
+
+/* =======================
+   PANELS
+======================= */
+
+.panels{
+    display:grid;
+    grid-template-columns:
+    1fr 1fr;
+    gap:20px;
+}
+
+.panel{
+    background:#111827;
+    padding:20px;
+    border-radius:12px;
+
+    box-shadow:
+    0 0 15px rgba(0,255,255,0.2);
+}
+
+.panel h3{
+    color:#00ffff;
+    margin-bottom:15px;
+}
+
+/* =======================
+   TABLE
+======================= */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th,
+table td{
+    border:1px solid #374151;
+    padding:10px;
+}
+
+table th{
+    background:#1f2937;
+}
+
+/* =======================
+   HISTORY
+======================= */
+
+.history{
+    margin-top:25px;
+}
+
+.history-item{
+    background:#111827;
+    padding:10px;
+    margin-bottom:8px;
+    border-radius:8px;
+}
+
+/* =====================================
+   V3 CYBER DASHBOARD DESIGN
+===================================== */
+
+.panel{
+    transition:0.3s;
+}
+
+.panel:hover{
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 0 20px rgba(0,255,255,0.4);
+}
+
+/* Executive Summary */
+
+#executiveSummary{
+
+    font-size:16px;
+
+    line-height:1.8;
+
+    color:#e5e7eb;
+
+}
+
+/* Analyst Verdict */
+
+#analystVerdict{
+
+    font-size:16px;
+
+    line-height:2;
+
+}
+
+/* Scan Metadata */
+
+#scanMetadata{
+
+    font-size:15px;
+
+    line-height:2;
+
+    color:#d1d5db;
+
+}
+
+/* Domain Intelligence */
+
+#domainIntel{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:15px;
+
+    margin-top:10px;
+
+}
+
+.domain-card{
+
+    background:#1f2937;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    text-align:center;
+
+}
+
+.domain-card h4{
+
+    color:#00ffff;
+
+    margin-bottom:10px;
+
+}
+
+/* Risk Breakdown */
+
+#riskBreakdown{
+
+    margin-top:10px;
+
+}
+
+.risk-row{
+
+    margin-bottom:15px;
+
+}
+
+.risk-title{
+
+    margin-bottom:5px;
+
+}
+
+.risk-bar-bg{
+
+    background:#1f2937;
+
+    height:22px;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+}
+
+.risk-bar-fill{
+
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        #00ffff,
+        #00ff99
+    );
+
+}
+
+/* Security Checklist */
+
+#securityChecklist{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+
+    gap:15px;
+
+}
+
+.check-item{
+
+    background:#1f2937;
+
+    padding:12px;
+
+    border-radius:8px;
+
+}
+
+/* Attack Techniques */
+
+#attackTechniques{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+
+    gap:15px;
+
+}
+
+.attack-card{
+
+    background:#1f2937;
+
+    padding:15px;
+
+    border-radius:10px;
+}
+
+/* Status Colors */
+
+.success{
+
+    color:#22c55e;
+
+    font-weight:bold;
+
+}
+
+.warning{
+
+    color:#f59e0b;
+
+    font-weight:bold;
+
+}
+
+.danger{
+
+    color:#ef4444;
+
+    font-weight:bold;
+
+}
+
+/* Better Dashboard Cards */
+
+.card{
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:3px;
+
+    background:linear-gradient(
+        90deg,
+        cyan,
+        #00ff99
+    );
+}
+
+/* Fancy Scrollbar */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#111827;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:cyan;
+
+    border-radius:10px;
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🛡 CyberShield Phishing Detector</h1>
+
+<div class="search-box">
+
+<input
+id="urlInput"
+type="text"
+placeholder="Enter URL to Analyze"
+/>
+
+<button onclick="analyzeURL()">
+Analyze
+</button>
+
+</div>
+
+<!-- DASHBOARD -->
+
+<div class="dashboard">
+
+<div class="card">
+<h2>Risk Score</h2>
+<div
+class="card-value"
+id="riskScore">
+0
+</div>
+</div>
+
+<div class="card">
+<h2>Confidence</h2>
+<div
+class="card-value"
+id="confidence">
+0%
+</div>
+</div>
+
+<div class="card">
+<h2>Threat Level</h2>
+
+<div
+id="threatBadge"
+class="badge low">
+SAFE
+</div>
+
+</div>
+
+</div>
+
+<!-- PROGRESS BAR -->
+
+<div class="progress-container">
+
+<div
+id="progressBar"
+class="progress-bar">
+</div>
+
+</div>
+
+<!-- PANELS -->
+
+<div class="panels">
+
+<div class="panel">
+
+<h3>🌐 URL Information</h3>
+
+<div id="urlInfo">
+
+Waiting for analysis...
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<h3>🛡 Security Indicators</h3>
+
+<div id="securityIndicators">
+
+Waiting for analysis...
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<h3>🚨 Detected Issues</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+</tr>
+</thead>
+
+<tbody id="findingsTable">
+
+<tr>
+<td colspan="2">
+No analysis yet
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="panel">
+
+<h3>📋 Recommendations</h3>
+
+<div id="recommendations">
+
+Waiting for analysis...
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ======================================
+     EXECUTIVE SUMMARY
+====================================== -->
+
+<div class="panel" style="margin-top:25px;">
+
+<h3>📋 Executive Summary</h3>
+
+<div id="executiveSummary">
+
+Waiting for analysis...
+
+</div>
+
+</div>
+
+<!-- ======================================
+     ANALYST VERDICT + SCAN INFO
+====================================== -->
+
+<div class="panels" style="margin-top:20px;">
+
+<div class="panel">
+
+<h3>🎯 Analyst Verdict</h3>
+
+<div id="analystVerdict">
+
+Waiting for analysis...
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<h3>🕒 Scan Metadata</h3>
+
+<div id="scanMetadata">
+
+Waiting for analysis...
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ======================================
+     DOMAIN INTELLIGENCE
+====================================== -->
+
+<div class="panel" style="margin-top:20px;">
+
+<h3>🌍 Domain Intelligence</h3>
+
+<div id="domainIntel">
+
+Waiting for analysis...
+
+</div>
+
+</div>
+
+<!-- ======================================
+     RISK BREAKDOWN
+====================================== -->
+
+<div class="panel" style="margin-top:20px;">
+
+<h3>📊 Risk Breakdown</h3>
+
+<div id="riskBreakdown">
+
+Waiting for analysis...
+
+</div>
+
+</div>
+
+<!-- ======================================
+     SECURITY CHECKLIST
+====================================== -->
+
+<div class="panel" style="margin-top:20px;">
+
+<h3>🛡 Security Checklist</h3>
+
+<div id="securityChecklist">
+
+Waiting for analysis...
+
+</div>
+
+</div>
+
+<!-- ======================================
+     ATTACK TECHNIQUES
+====================================== -->
+
+<div class="panel" style="margin-top:20px;">
+
+<h3>🚨 Attack Techniques Detected</h3>
+
+<div id="attackTechniques">
+
+Waiting for analysis...
+
+</div>
+
+</div>
+
+<!-- HISTORY -->
+
+<div class="history">
+
+<h2 style="margin:20px 0;color:cyan;">
+📜 Scan History
+</h2>
+
+<div id="historyList">
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let historyItems = [];
+
+function analyzeURL(){
+
+    let url =
+    document.getElementById(
+        "urlInput"
+    ).value.trim();
+
+    if(!url){
+        alert("Enter a URL");
+        return;
+    }
+
+    let parsed;
+
+    try{
+        parsed = new URL(url);
+    }
+    catch{
+        alert("Invalid URL");
+        return;
+    }
+
+    let domain =
+    parsed.hostname;
+
+    let score = 0;
+
+    let findings = [];
+
+    let severity = [];
+
+    let ipPattern =
+    /^\d+\.\d+\.\d+\.\d+$/;
+
+    // HTTPS
+
+    if(parsed.protocol !== "https:"){
+
+        score += 20;
+
+        findings.push(
+        "No HTTPS Encryption");
+
+        severity.push(
+        "High");
+
+    }
+
+    // URL Length
+
+    if(url.length > 75){
+
+        score += 15;
+
+        findings.push(
+        "Long URL");
+
+        severity.push(
+        "Medium");
+
+    }
+
+    // More checks continue in Part 2...
+        // Excessive Dots
+
+    let dotCount =
+    (url.match(/\./g)||[]).length;
+
+    if(dotCount > 3){
+
+        score += 10;
+
+        findings.push(
+        "Excessive Subdomains");
+
+        severity.push(
+        "Medium");
+
+    }
+
+    // @ Symbol
+
+    if(url.includes("@")){
+
+        score += 20;
+
+        findings.push(
+        "@ Symbol Found");
+
+        severity.push(
+        "High");
+
+    }
+
+    // IP Address
+
+    if(ipPattern.test(domain)){
+
+        score += 25;
+
+        findings.push(
+        "IP Address Used");
+
+        severity.push(
+        "Critical");
+
+    }
+
+    // Hyphens
+
+    let hyphenCount =
+    (domain.match(/-/g)||[]).length;
+
+    if(hyphenCount >= 2){
+
+        score += 15;
+
+        findings.push(
+        "Multiple Hyphens");
+
+        severity.push(
+        "Medium");
+
+    }
+
+    // Digits
+
+    let digitCount =
+    (url.match(/\d/g)||[]).length;
+
+    if(digitCount > 8){
+
+        score += 10;
+
+        findings.push(
+        "Excessive Digits");
+
+        severity.push(
+        "Low");
+
+    }
+
+    // Suspicious TLDs
+
+    let suspiciousTlds = [
+        ".xyz",
+        ".top",
+        ".click",
+        ".tk",
+        ".gq",
+        ".work"
+    ];
+
+    let detectedTld = "None";
+
+    suspiciousTlds.forEach(tld=>{
+
+        if(domain.endsWith(tld)){
+
+            score += 20;
+
+            detectedTld = tld;
+
+            findings.push(
+            "Suspicious TLD " + tld);
+
+            severity.push(
+            "High");
+
+        }
+
+    });
+
+    // Threat Level
+
+    let threatLevel;
+    let badgeClass;
+
+    if(score >= 80){
+
+        threatLevel = "CRITICAL";
+        badgeClass = "critical";
+
+    }
+    else if(score >= 60){
+
+        threatLevel = "HIGH";
+        badgeClass = "high";
+
+    }
+    else if(score >= 30){
+
+        threatLevel = "MEDIUM";
+        badgeClass = "medium";
+
+    }
+    else{
+
+        threatLevel = "LOW";
+        badgeClass = "low";
+
+    }
+
+    let confidence =
+    Math.min(99, score + 15);
+
+    // =====================
+    // UPDATE DASHBOARD
+    // =====================
+
+    document.getElementById(
+        "riskScore"
+    ).innerText = score;
+
+    document.getElementById(
+        "confidence"
+    ).innerText =
+    confidence + "%";
+
+    let badge =
+    document.getElementById(
+        "threatBadge"
+    );
+
+    badge.innerText =
+    threatLevel;
+
+    badge.className =
+    "badge " + badgeClass;
+
+    document.getElementById(
+        "progressBar"
+    ).style.width =
+    score + "%";
+
+    // =====================
+    // URL INFO
+    // =====================
+
+    document.getElementById(
+        "urlInfo"
+    ).innerHTML = `
+
+<b>Domain:</b>
+${domain}
+<br><br>
+
+<b>Protocol:</b>
+${parsed.protocol}
+<br><br>
+
+<b>Path:</b>
+${parsed.pathname || "/"}
+<br><br>
+
+<b>URL Length:</b>
+${url.length}
+<br><br>
+
+<b>Dots:</b>
+${dotCount}
+<br><br>
+
+<b>Hyphens:</b>
+${hyphenCount}
+<br><br>
+
+<b>Digits:</b>
+${digitCount}
+
+`;
+
+    // =====================
+    // SECURITY INDICATORS
+    // =====================
+
+    document.getElementById(
+        "securityIndicators"
+    ).innerHTML = `
+
+HTTPS:
+${parsed.protocol==="https:"?"✅":"❌"}
+
+<br><br>
+
+IP Address:
+${ipPattern.test(domain)?"❌":"✅"}
+
+<br><br>
+
+Suspicious TLD:
+${detectedTld==="None"?"✅":"❌"}
+
+<br><br>
+
+Subdomains:
+${dotCount<=3?"✅":"❌"}
+
+`;
+
+    // =====================
+    // FINDINGS TABLE
+    // =====================
+
+    let tableHTML = "";
+
+    if(findings.length){
+
+        for(
+            let i=0;
+            i<findings.length;
+            i++
+        ){
+
+            tableHTML += `
+            <tr>
+            <td>${findings[i]}</td>
+            <td>${severity[i]}</td>
+            </tr>
+            `;
+        }
+
+    }
+    else{
+
+        tableHTML = `
+        <tr>
+        <td colspan="2">
+        No issues detected
+        </td>
+        </tr>
+        `;
+    }
+
+    document.getElementById(
+        "findingsTable"
+    ).innerHTML =
+    tableHTML;
+
+    // =====================
+    // RECOMMENDATIONS
+    // =====================
+
+    let recommendations = "";
+
+    if(score >= 60){
+
+        recommendations = `
+        🚨 Do not enter passwords.<br><br>
+        🚨 Do not enter banking details.<br><br>
+        🚨 Verify the official website.<br><br>
+        🚨 Avoid downloads from this site.
+        `;
+
+    }
+    else if(score >= 30){
+
+        recommendations = `
+        ⚠ Proceed carefully.<br><br>
+        ⚠ Verify HTTPS certificate.<br><br>
+        ⚠ Double-check domain spelling.
+        `;
+
+    }
+    else{
+
+        recommendations = `
+        ✅ Website appears relatively safe.<br><br>
+        ✅ Follow standard browsing practices.
+        `;
+    }
+
+    document.getElementById(
+        "recommendations"
+    ).innerHTML =
+    recommendations;
+
+    // =====================
+    // HISTORY
+    // =====================
+
+    historyItems.unshift(
+        {
+            url:url,
+            threat:threatLevel,
+            score:score
+        }
+    );
+
+    if(historyItems.length > 10){
+
+        historyItems.pop();
+
+    }
+
+    let historyHTML = "";
+
+    historyItems.forEach(item=>{
+
+        historyHTML += `
+        <div class="history-item">
+        <b>${item.url}</b>
+        <br>
+        Threat:
+        ${item.threat}
+        |
+        Score:
+        ${item.score}
+        </div>
+        `;
+    });
+
+    document.getElementById(
+        "historyList"
+    ).innerHTML =
+    historyHTML;
+
+    // =====================================
+// EXECUTIVE SUMMARY
+// =====================================
+
+let summary = "";
+
+if(score >= 80){
+
+    summary = `
+    🚨 This website exhibits multiple
+    high-risk phishing indicators.
+
+    Users should avoid entering
+    credentials, banking information,
+    or downloading files.
+
+    Recommended Action:
+    BLOCK IMMEDIATELY.
+    `;
+
+}
+else if(score >= 60){
+
+    summary = `
+    ⚠ This website contains several
+    suspicious characteristics commonly
+    found in phishing attacks.
+
+    Recommended Action:
+    HIGH CAUTION.
+    `;
+
+}
+else if(score >= 30){
+
+    summary = `
+    ⚠ Some suspicious indicators were
+    detected.
+
+    Additional verification is advised.
+    `;
+
+}
+else{
+
+    summary = `
+    ✅ No major phishing indicators
+    detected.
+
+    Website appears relatively safe.
+    `;
+}
+
+document.getElementById(
+    "executiveSummary"
+).innerHTML = summary;
+
+// =====================================
+// ANALYST VERDICT
+// =====================================
+
+let action;
+
+if(score >= 80){
+
+    action = "BLOCK";
+
+}
+else if(score >= 60){
+
+    action = "INVESTIGATE";
+
+}
+else if(score >= 30){
+
+    action = "MONITOR";
+
+}
+else{
+
+    action = "ALLOW";
+
+}
+
+document.getElementById(
+    "analystVerdict"
+).innerHTML = `
+
+<b>Classification:</b>
+${threatLevel}
+<br><br>
+
+<b>Confidence:</b>
+${confidence}%
+<br><br>
+
+<b>Priority:</b>
+P${Math.max(1,4-Math.floor(score/25))}
+<br><br>
+
+<b>Recommended Action:</b>
+${action}
+
+`;
+
+// =====================================
+// SCAN METADATA
+// =====================================
+
+let scanID =
+"PH-" +
+Math.floor(
+10000 + Math.random()*90000
+);
+
+let now =
+new Date();
+
+document.getElementById(
+    "scanMetadata"
+).innerHTML = `
+
+<b>Scan ID:</b>
+${scanID}
+<br><br>
+
+<b>Date:</b>
+${now.toLocaleDateString()}
+<br><br>
+
+<b>Time:</b>
+${now.toLocaleTimeString()}
+<br><br>
+
+<b>Engine:</b>
+CyberShield v3.0
+<br><br>
+
+<b>Analysis Time:</b>
+0.${Math.floor(Math.random()*90+10)}
+ sec
+
+`;
+
+// =====================================
+// DOMAIN INTELLIGENCE
+// =====================================
+
+document.getElementById(
+    "domainIntel"
+).innerHTML = `
+
+<div class="domain-card">
+<h4>Domain</h4>
+${domain}
+</div>
+
+<div class="domain-card">
+<h4>TLD</h4>
+${detectedTld}
+</div>
+
+<div class="domain-card">
+<h4>Subdomains</h4>
+${dotCount}
+</div>
+
+<div class="domain-card">
+<h4>Digits</h4>
+${digitCount}
+</div>
+
+<div class="domain-card">
+<h4>Hyphens</h4>
+${hyphenCount}
+</div>
+
+<div class="domain-card">
+<h4>Risk Estimate</h4>
+${threatLevel}
+</div>
+
+`;
+
+// =====================================
+// RISK BREAKDOWN
+// =====================================
+
+let breakdownHTML = "";
+
+function addRiskBar(
+    title,
+    points
+){
+
+    breakdownHTML += `
+
+    <div class="risk-row">
+
+    <div class="risk-title">
+    ${title}
+    (${points})
+    </div>
+
+    <div class="risk-bar-bg">
+
+    <div
+    class="risk-bar-fill"
+    style="width:${points*4}%">
+    </div>
+
+    </div>
+
+    </div>
+
+    `;
+}
+
+if(parsed.protocol !== "https:")
+addRiskBar(
+"HTTPS Risk",
+20
+);
+
+if(url.length > 75)
+addRiskBar(
+"Long URL",
+15
+);
+
+if(dotCount > 3)
+addRiskBar(
+"Subdomains",
+10
+);
+
+if(ipPattern.test(domain))
+addRiskBar(
+"IP Address",
+25
+);
+
+if(hyphenCount >= 2)
+addRiskBar(
+"Hyphens",
+15
+);
+
+if(detectedTld !== "None")
+addRiskBar(
+"Suspicious TLD",
+20
+);
+
+document.getElementById(
+    "riskBreakdown"
+).innerHTML =
+breakdownHTML;
+
+// =====================================
+// SECURITY CHECKLIST
+// =====================================
+
+document.getElementById(
+    "securityChecklist"
+).innerHTML = `
+
+<div class="check-item">
+HTTPS Enabled:
+${parsed.protocol==="https:"?
+'<span class="success">✔</span>'
+:
+'<span class="danger">✖</span>'
+}
+</div>
+
+<div class="check-item">
+IP Address:
+${ipPattern.test(domain)?
+'<span class="danger">✖</span>'
+:
+'<span class="success">✔</span>'
+}
+</div>
+
+<div class="check-item">
+Safe TLD:
+${detectedTld==="None"?
+'<span class="success">✔</span>'
+:
+'<span class="danger">✖</span>'
+}
+</div>
+
+<div class="check-item">
+URL Length:
+${url.length<=75?
+'<span class="success">✔</span>'
+:
+'<span class="warning">⚠</span>'
+}
+</div>
+
+<div class="check-item">
+Subdomain Count:
+${dotCount<=3?
+'<span class="success">✔</span>'
+:
+'<span class="warning">⚠</span>'
+}
+</div>
+
+<div class="check-item">
+Domain Structure:
+${hyphenCount<2?
+'<span class="success">✔</span>'
+:
+'<span class="warning">⚠</span>'
+}
+</div>
+
+`;
+
+// =====================================
+// ATTACK TECHNIQUES
+// =====================================
+
+document.getElementById(
+    "attackTechniques"
+).innerHTML = `
+
+<div class="attack-card">
+${hyphenCount>=2 ? "✓" : "✗"}
+ Domain Spoofing
+</div>
+
+<div class="attack-card">
+${url.length>75 ? "✓" : "✗"}
+ URL Obfuscation
+</div>
+
+<div class="attack-card">
+${parsed.protocol!=="https:" ? "✓" : "✗"}
+ Credential Harvesting Risk
+</div>
+
+<div class="attack-card">
+${ipPattern.test(domain) ? "✓" : "✗"}
+ IP-Based Hosting
+</div>
+
+<div class="attack-card">
+${detectedTld!=="None" ? "✓" : "✗"}
+ Suspicious Infrastructure
+</div>
+
+<div class="attack-card">
+${score>=60 ? "✓" : "✗"}
+ Phishing Probability High
+</div>
+
+`;
+
+}
+
+</script>
+
+</body>
+</html>
